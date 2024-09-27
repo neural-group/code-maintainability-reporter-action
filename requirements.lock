@@ -7,12 +7,10 @@
 #   all-features: false
 #   with-sources: false
 
--e file:.
 colorama==0.4.6
     # via radon
 mando==0.7.1
     # via radon
 radon==6.0.1
-    # via code-maintainability-reporter-action
 six==1.16.0
     # via mando
