@@ -1,6 +1,7 @@
 from code_maintainability_reporter_action.core.code_analyzer import CodeAnalyzer
 from code_maintainability_reporter_action.core.code_analyzer_python import CodeAnalyzerPython
 from code_maintainability_reporter_action.core.code_analyzer_typescript import CodeAnalyzerTypescript
+from . import diff
 import glob
 import argparse
 from pathlib import Path
@@ -51,9 +52,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--includes",
         type=str,
-        required=True,
+        required=False,
         help="List of files to include in the analysis as a comma-separated string. "
              "Example: '/dir1/**/*.py,/dir2/**/*.{ts,tsx,js,jsx}'",
+        default='',
         action=GlobListAction
     )
 
@@ -67,6 +69,19 @@ if __name__ == "__main__":
         action=GlobListAction
     )
 
+    parser.add_argument(
+        "--diff",
+        action="store_true",
+        help="Show difference between json_old and json_new and format in markdown."
+    )
+
+    # Add two optional positional arguments
+    parser.add_argument("json_old", type=str, nargs='?', default=None, help="old code analysis results in json (optional unless --diff is specified)")
+    parser.add_argument("json_new", type=str, nargs='?', default=None, help="new code analysis results in json (optional unless --diff is specified)")
+
     args = parser.parse_args()
-    
-    print(main(args.includes, args.excludes))
+
+    if args.diff:
+        print(diff.main(args.json_old, args.json_new))
+    else:
+        print(main(args.includes, args.excludes))

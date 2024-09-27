@@ -44,7 +44,7 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          docker run -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
@@ -59,7 +59,7 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          docker run -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
@@ -68,7 +68,7 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          bash <(curl -Ls https://github.com/neural-group/code-maintainability-reporter-action/diff_json.sh) "${{ steps.analysis_old.outputs.results }}" "${{ steps.analysis_new.outputs.results }}"
+          docker run --rm -v /target:/target code-maintainability-reporter --diff "${{ steps.analysis_old.outputs.results }}" "${{ steps.analysis_new.outputs.results }}"
           echo EOF
         } >> "$GITHUB_OUTPUT"
       continue-on-error: true
