@@ -1,5 +1,5 @@
-name: "Run Code Analysis and Comment on PR"
-description: "Runs code analysis and comments the results on a pull request."
+name: "Code Maintainability Reporter Action"
+description: "Reports code complexity & maintainability metrics and differences in pull requests as comments"
 author: "Neural Group Inc."
 inputs:
   token:
@@ -84,5 +84,5 @@ runs:
 
           </details>
 branding:
-  icon: "microscope"
+  icon: "git-pull-request"
   color: "blue"

@@ -1,7 +1,7 @@
 # Code Maintainability Reporter Action
 
 ## Overview
-`code-maintainability-reporter-action` helps you evaluate code refactoring efforts by visualizing changes in code complexity and maintainability on every pull request. It provides a concise summary of how each PR impacts the codebase, allowing teams to easily track improvements or potential technical debt. This action makes it simple to perform quantitative assessments of code quality, making PR reviews more effective and data-driven.
+`code-maintainability-reporter-action` helps you evaluate code refactoring efforts by visualizing changes in code complexity and maintainability on every pull request. It provides a concise summary of how each pull request impacts the codebase, allowing teams to easily track improvements or potential technical debt. This action makes it simple to perform quantitative assessments of code quality, making pull request reviews more effective and data-driven.
 
 ## Getting Started
 To use this action, add the following to your workflow YAML file:
