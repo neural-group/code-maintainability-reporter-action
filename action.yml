@@ -23,20 +23,20 @@ runs:
   steps:
     # TODO: register the docker image in Dockerhub
     - name: Check out the analyzer repository
-      uses: actions/checkout@v3
-      with:
-        repository: neural-group/code-maintainability-reporter-action
-        repo: /repo
-    # TODO: register the docker image in Dockerhub
-    - name: Build Docker container
       shell: bash
       run: |
-        docker build -t code-maintainability-reporter -f /repo/Dockerfile /repo
+        git clone https://github.com/neural-group/code-maintainability-reporter-action.git -b main
+    # TODO: register the docker image in Dockerhub
+    - name: Build Docker container
+      working-directory: code-maintainability-reporter-action
+      shell: bash
+      run: |
+        docker build -t code-maintainability-reporter .
 
     - name: Check out the repository
       uses: actions/checkout@v3
       with:
-        repo: /target
+        repo: target-repo
         fetch-depth: 2 # Fetch both the source and target branch
 
     - name: Run complexity on target branch
@@ -45,16 +45,15 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          docker run --rm -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v ./target-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
     - name: Switch to source branch
+      working-directory: target-repo
       shell: bash
       run: |
-        cd /target
         git checkout ${{ github.event.pull_request.base.ref }}
-        cd -
 
     - name: Run complexity on source branch
       id: analysis_new
@@ -62,7 +61,7 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          docker run --rm -v /target:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v ./target-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
@@ -72,7 +71,7 @@ runs:
       run: |
         {
           echo 'results<<EOF'
-          docker run --rm -v /target:/target code-maintainability-reporter --diff "${{ steps.analysis_old.outputs.results }}" "${{ steps.analysis_new.outputs.results }}"
+          docker run --rm code-maintainability-reporter --diff "${{ steps.analysis_old.outputs.results }}" "${{ steps.analysis_new.outputs.results }}"
           echo EOF
         } >> "$GITHUB_OUTPUT"
       continue-on-error: true
@@ -87,6 +86,11 @@ runs:
           ${{ steps.calc_diff.outputs.results }}
 
           </details>
+    - name: Clean up
+      shell: bash
+      run: |
+        docker image rm code-maintainability-reporter
+        rm -rf code-maintainability-reporter-action target-repo
 branding:
   icon: "git-pull-request"
   color: "blue"
