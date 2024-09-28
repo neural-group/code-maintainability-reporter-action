@@ -36,7 +36,7 @@ runs:
     - name: Check out the repository
       uses: actions/checkout@v3
       with:
-        repo: target-repo
+        path: target-repo
         fetch-depth: 2 # Fetch both the source and target branch
 
     - name: Run complexity on target branch
