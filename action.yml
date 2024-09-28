@@ -41,6 +41,7 @@ runs:
 
     - name: Run complexity on target branch
       id: analysis_old
+      shell: bash
       run: |
         {
           echo 'results<<EOF'
@@ -49,6 +50,7 @@ runs:
         } >> "$GITHUB_OUTPUT"
 
     - name: Switch to source branch
+      shell: bash
       run: |
         cd /target
         git checkout ${{ github.event.pull_request.base.ref }}
@@ -56,6 +58,7 @@ runs:
 
     - name: Run complexity on source branch
       id: analysis_new
+      shell: bash
       run: |
         {
           echo 'results<<EOF'
@@ -65,6 +68,7 @@ runs:
 
     - name: Get code complexity diff
       id: calc_diff
+      shell: bash
       run: |
         {
           echo 'results<<EOF'
