@@ -48,7 +48,7 @@ def calculate_diff(json_old: dict, json_new: dict):
         total_diff['mi_raw'] += diff_mi_raw
 
     # Create summary row
-    mi_raw_icon = ':) ' if total_diff['mi_raw'] < -0.1 else ''
+    mi_raw_icon = ':) ' if total_diff['mi_raw'] > 0.1 else ''
     result.append((
         "**total**", "", 
         round(total_diff['cc'], 1), 
@@ -85,7 +85,7 @@ def main(value1: str, value2: str):
     markdown_output = format_as_markdown(diff_list)
 
     # Wrap the output in a collapsible <details> tag
-    final_output = f"""
+    return f"""
 <details>
 <summary>Code Complexity Analytics</summary>
 
@@ -93,5 +93,3 @@ def main(value1: str, value2: str):
 
 </details>
 """
-
-    print(final_output)
