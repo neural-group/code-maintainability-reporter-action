@@ -42,7 +42,7 @@ runs:
         path: head-repo
 
     - name: Run complexity on head branch
-      id: analysis_old
+      id: analysis_new
       shell: bash
       run: |
         {
@@ -62,7 +62,7 @@ runs:
         path: base-repo
 
     - name: Run complexity on base branch
-      id: analysis_new
+      id: analysis_old
       shell: bash
       run: |
         {
