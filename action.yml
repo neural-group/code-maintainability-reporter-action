@@ -2,9 +2,6 @@ name: "Code Maintainability Reporter Action"
 description: "Reports code complexity & maintainability metrics and differences in pull requests as comments"
 author: "Neural Group Inc."
 inputs:
-  token:
-    description: "GitHub Token"
-    required: true
   includes:
     description: |
       'List of files to include in the analysis as a comma-separated string.'
@@ -33,35 +30,35 @@ runs:
       run: |
         docker build -t code-maintainability-reporter .
 
-    - name: Check out the repository
-      uses: actions/checkout@v3
+    - name: Check out the repository (head)
+      uses: actions/checkout@v4
       with:
-        path: target-repo
-        fetch-depth: 2 # Fetch both the source and target branch
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: head-repo
 
-    - name: Run complexity on target branch
+    - name: Run complexity on head branch
       id: analysis_old
       shell: bash
       run: |
         {
           echo 'results<<EOF'
-          docker run --rm -v ./target-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v ./head-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
-    - name: Switch to source branch
-      working-directory: target-repo
-      shell: bash
-      run: |
-        git checkout ${{ github.event.pull_request.base.ref }}
+    - name: Check out the repository (base)
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.base.sha }}
+        path: base-repo
 
-    - name: Run complexity on source branch
+    - name: Run complexity on base branch
       id: analysis_new
       shell: bash
       run: |
         {
           echo 'results<<EOF'
-          docker run --rm -v ./target-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
+          docker run --rm -v ./base-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
