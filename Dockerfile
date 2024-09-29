@@ -1,6 +1,4 @@
-FROM python:3.12-slim
-
-RUN pip install uv
+FROM nikolaik/python-nodejs:python3.12-nodejs22-slim
 
 WORKDIR /app
 COPY requirements.lock ./
