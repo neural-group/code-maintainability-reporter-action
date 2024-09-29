@@ -1,14 +1,13 @@
 import json
-import sys
 from collections import defaultdict
 
-def parse_json(json_str):
+def parse_json(json_str: str):
     """Parse JSON strings with mixed single and double quotes, and return a proper JSON object."""
     # Replace single quotes with double quotes to ensure correct JSON format
     json_str = json_str.replace("'", '"')
     return json.loads(json_str)
 
-def calculate_diff(json_old, json_new):
+def calculate_diff(json_old: dict, json_new: dict):
     """Calculate the differences between the old and new JSON."""
     keys = set(json_old.keys()).union(set(json_new.keys()))  # Get all unique keys
     result = []

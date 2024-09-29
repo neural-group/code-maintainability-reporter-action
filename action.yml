@@ -85,13 +85,7 @@ runs:
     - name: Create a PR comment with the complexity difference
       uses: marocchino/sticky-pull-request-comment@v2
       with:
-        message: | 
-          <details>
-          <summary>Code Complexity Analytics</summary>
-
-          ${{ steps.calc_diff.outputs.results }}
-
-          </details>
+        message: ${{ steps.calc_diff.outputs.results }}
     - name: Clean up
       shell: bash
       run: |
