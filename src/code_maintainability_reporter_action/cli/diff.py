@@ -61,12 +61,14 @@ def calculate_diff(json_old: dict, json_new: dict):
 
 def format_as_markdown(diff_list):
     """Format the differences as a Markdown table."""
-    header = "| Key |   | diff cc | diff hal | diff sloc | diff mi_raw | new mi_pct |"
+    header = "| File |   | diff cc | diff hal | diff sloc | diff mi_raw | new mi_pct |"
     separator = "|---|---|---|---|---|---|---|"
     rows = [header, separator]
 
+
     for key, status, diff_cc, diff_hal, diff_sloc, diff_mi_raw, new_mi_pct in diff_list:
-        rows.append(f"| {key} | {status} | {diff_cc} | {diff_hal} | {diff_sloc} | {diff_mi_raw} | {new_mi_pct} |")
+        file_path = f"~~{key}~~" if status == "Del" else key + " [+]" if status == "Add" else key
+        rows.append(f"| {file_path} | {diff_cc} | {diff_hal} | {diff_sloc} | {diff_mi_raw} | {new_mi_pct} |")
 
     return "\n".join(rows)
 

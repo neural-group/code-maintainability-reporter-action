@@ -47,20 +47,16 @@ jobs:
 
 #### Output sample
 
-| File        |   | diff cc | diff hal | diff sloc | diff mi_raw | new_mi_pct |
-|-------------|---|---------|----------|-----------|-------------|------------|
-| src/app.py  | Upd | 5.4     | -2.1     | 12.0      | -1.8        | 85.2       |
-| src/utils.py| Add | 7.0     | 4.2      | 30.5      | 3.9         | 92.7       |
-| tests/test_app.py | Del | -3.6   | -1.4     | -15.0     | -2.0        |            |
-| **total**   |   | 8.8     | 0.7      | 27.5      | 0.1         |            |
+| File        | diff cc | diff hal | diff sloc | diff mi_raw | new_mi_pct |
+|-------------|---------|----------|-----------|-------------|------------|
+| src/app.py  | 5.4     | -2.1     | 12.0      | -1.8        | 85.2       |
+| src/utils.py [+] | 7.0     | 4.2      | 30.5      | 3.9         | 92.7       |
+| ~~tests/test_app.py~~ | -3.6   | -1.4     | -15.0     | -2.0        |            |
+| **total**   | 8.8     | 0.7      | 27.5      | 0.1         |            |
 
 #### Description
 
 - File: The relative path of the file analyzed.
-- Change Type:
-  - Add: The file was newly added in this pull request.
-  - Del: The file was deleted in this pull request.
-  - Upd: The file was modified, and its maintainability metrics changed.
 - diff cc: The difference in Cyclomatic Complexity.
 - diff hal: The difference in Halstead metrics.
 - diff sloc: The difference in Source Lines of Code (SLOC).
