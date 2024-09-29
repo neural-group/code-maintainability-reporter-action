@@ -22,6 +22,7 @@ runs:
     - name: Check out the analyzer repository
       shell: bash
       run: |
+        rm -rf code-maintainability-reporter-action
         git clone https://github.com/neural-group/code-maintainability-reporter-action.git -b main
     # TODO: register the docker image in Dockerhub
     - name: Build Docker container
@@ -29,6 +30,10 @@ runs:
       shell: bash
       run: |
         docker build -t code-maintainability-reporter .
+
+    - name: Delete head-repo if exists
+      shell: bash
+      run: rm -rf head-repo
 
     - name: Check out the repository (head)
       uses: actions/checkout@v4
@@ -45,6 +50,10 @@ runs:
           docker run --rm -v ./head-repo:/target code-maintainability-reporter /target/${{ inputs.includes }} /target/${{ inputs.excludes }}
           echo EOF
         } >> "$GITHUB_OUTPUT"
+
+    - name: Delete base-repo if exists
+      shell: bash
+      run: rm -rf base-repo
 
     - name: Check out the repository (base)
       uses: actions/checkout@v4
@@ -87,7 +96,7 @@ runs:
       shell: bash
       run: |
         docker image rm code-maintainability-reporter
-        rm -rf code-maintainability-reporter-action target-repo
+        rm -rf code-maintainability-reporter-action head-repo base-repo
 branding:
   icon: "git-pull-request"
   color: "blue"
